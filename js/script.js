@@ -29,7 +29,8 @@ function loadData() {
     var NYTimesURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     NYTimesURL += '?' + $.param({
       'api-key': "1315706dd301431ebc3f3de8fa11d2e6",
-      'q': "buenos aires"
+      'q': "buenos aires",
+      'sort': "newest"
     });
 
     $.getJSON( NYTimesURL, function( data ) 
