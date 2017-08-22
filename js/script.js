@@ -61,6 +61,18 @@ function loadData() {
             "class": "article-list",
             html: items.join( "" )
         }).appendTo( ".nytimes-container" );
+    })
+    .error(function()
+    {
+        if ($('#nytimes-articles-default').length)
+        {
+            $('#nytimes-articles-default').detach();
+            $( "<h2/>", 
+            {
+                html: "NewYork Time Articles Could Not Be Loaded"
+            }).appendTo( ".nytimes-container" );
+        }
+        console.error(data.message);
     });
     
 
