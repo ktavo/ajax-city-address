@@ -5,11 +5,13 @@ function loadData() {
     var $wikiElem = $('#wikipedia-links');
     var $nytHeaderElem = $('#nytimes-header');
     var $nytElem = $('#nytimes-articles');
+    var $nytContainer = $('.nytimes-container');
     var $greeting = $('#greeting');
 
     // clear out old data before new request
     $wikiElem.text("");
     $nytElem.text("");
+    $nytContainer.text("");
 
     // load streetview
 
@@ -29,7 +31,7 @@ function loadData() {
     var NYTimesURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     NYTimesURL += '?' + $.param({
       'api-key': "1315706dd301431ebc3f3de8fa11d2e6",
-      'q': "buenos aires",
+      'q': $city,
       'sort': "newest"
     });
 
@@ -55,6 +57,7 @@ function loadData() {
             items.push("</li>")
         });
         $('#nytimes-articles-default').detach();
+        $('#nytimes-articles').detach();
         $( "<ul/>", 
         {
             "id": "nytimes-articles",
