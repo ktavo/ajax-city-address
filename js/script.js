@@ -75,6 +75,9 @@ function loadData() {
     });
 
     //Get Info from Wikipedia API
+    var wikipediaRequestTimeout = setTimeout(function(){
+        $('#wikipedia-links').text('Failed to get wikipedia results');
+    }, 8000);
     var wikipediaURL = 'https://en.wikipedia.org/wiki/';
     $.ajax({
         url: "https://en.wikipedia.org/w/api.php",
@@ -94,11 +97,12 @@ function loadData() {
                 var linkTitle = wikipediaArray[i].title;
                 $("#wikipedia-links").append('<li><a href="' + wikipediaURL + linkTitle + '">' + linkTitle + '</a></li>');
             }
-        },
+            clearTimeout(wikipediaRequestTimeout);
+        }/*,
         error: function(xhr, status, error) {
             console.error('Error on wiki api call');
             alert("error");
-        }
+        }*/
     });
     //END Get Info from Wikipedia API
     return false;
