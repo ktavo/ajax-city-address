@@ -13,8 +13,7 @@ function loadData() {
     $nytElem.text("");
     $nytContainer.text("");
 
-    // load streetview
-
+    // Load Streetview Data from GoogleMaps API
     var googleStreetViewImage = "http://maps.googleapis.com/maps/api/streetview?size=600x300&location=";
     var $city = $('#city').val();
     var $street =$('#street').val();
@@ -26,19 +25,16 @@ function loadData() {
     $body.append('<img class="bgimg" src="' + googleStreetViewImage + '">');
 
     //Load NYTimes data
-
-
     var NYTimesURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     NYTimesURL += '?' + $.param({
       'api-key': "1315706dd301431ebc3f3de8fa11d2e6",
       'q': $city,
       'sort': "newest"
     });
-
     $.getJSON( NYTimesURL, function( data ) 
     {
         var items = [];
-        console.log(data.response.docs);
+        //console.log(data.response.docs);
         var news = data.response.docs;
         $.each( news, function( key, val )
         {
@@ -77,8 +73,34 @@ function loadData() {
         }
         console.error(data.message);
     });
-    
 
+    //Get Info from Wikipedia API
+    var wikipediaURL = 'https://en.wikipedia.org/wiki/';
+    $.ajax({
+        url: "https://en.wikipedia.org/w/api.php",
+        jsonp: "callback", 
+        dataType: 'jsonp', 
+        data: { 
+            action: "query", 
+            list: "search", 
+            srsearch: $city, 
+            format: "json" 
+        },
+        success: function(jsonp) { 
+            //console.log(jsonp.query.search);
+            var wikipediaArray = jsonp.query.search;
+            for (var i = 0; i<wikipediaArray.length; i++)
+            {
+                var linkTitle = wikipediaArray[i].title;
+                $("#wikipedia-links").append('<li><a href="' + wikipediaURL + linkTitle + '">' + linkTitle + '</a></li>');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error on wiki api call');
+            alert("error");
+        }
+    });
+    //END Get Info from Wikipedia API
     return false;
 };
 
